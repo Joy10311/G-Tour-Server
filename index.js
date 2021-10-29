@@ -1,6 +1,6 @@
 const express = require('express')
 const { MongoClient } = require('mongodb');
-const ObjectId = require('mongodb').ObjectId;
+// const ObjectId = require('mongodb').ObjectId;
 const cors = require('cors');
 require('dotenv').config();
 
@@ -15,6 +15,8 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.znwze.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
+console.log(uri)
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
@@ -22,6 +24,26 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
+
+        const database = client.db('G_Tour');
+        const servicesCollection = database.collection('services');
+
+        // post API
+        // POST API
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            // console.log('hit the post', service)
+
+            const result = await servicesCollection.insertOne(service);
+            res.json(result)
+        });
+
+        // GET services API
+        app.get('/services', async (req, res) => {
+            const cursor = servicesCollection.find({});
+            const services = await cursor.toArray();
+            res.send(services);
+        })
 
     }
     finally {
