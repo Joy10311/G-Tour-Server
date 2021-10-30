@@ -27,6 +27,7 @@ async function run() {
 
         const database = client.db('G_Tour');
         const servicesCollection = database.collection('services');
+        const orderCollection = database.collection('orders')
 
         // post API
         // POST API
@@ -35,6 +36,14 @@ async function run() {
             const result = await servicesCollection.insertOne(service);
             res.json(result)
         });
+
+        // order confirm post api
+        app.post('/processOrders', async (req, res) => {
+            const newBooking = req.body;
+            const result = await orderCollection.insertOne(newBooking);
+            res.json(result);
+        });
+
 
         // GET services API
         app.get('/services', async (req, res) => {
