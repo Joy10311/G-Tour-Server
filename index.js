@@ -43,6 +43,14 @@ async function run() {
             const result = await orderCollection.insertOne(newBooking);
             res.json(result);
         });
+        // Get Api from orders
+        app.get('/processOrders', async (req, res) => {
+            const getOrders = await orderCollection.find({}).toArray();
+            res.json(getOrders)
+        });
+
+        // GET API by email
+
 
 
         // GET services API
