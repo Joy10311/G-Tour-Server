@@ -59,10 +59,16 @@ async function run() {
         });
 
 
+        // GEt all data in Manage all orders
+        app.get('/allorders', async (req, res) => {
+            const getOrders = await orderCollection.find({}).toArray();
+            res.json(getOrders)
+        })
+
         // Delete API 
         app.delete('/processOrders/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: id }
+            const query = { _id: ObjectId(id) }
             const result = await orderCollection.deleteOne(query);
             res.json(result)
         });
