@@ -40,9 +40,10 @@ async function run() {
         // order confirm post api
         app.post('/processOrders', async (req, res) => {
             const newBooking = req.body;
-            const result = await orderCollection.insertOne(newBooking);
+            const result = await orderCollections.insertOne(newBooking);
             res.json(result);
         });
+
         // Get Api from orders
         app.get('/processOrders', async (req, res) => {
             const getOrders = await orderCollection.find({}).toArray();
@@ -50,6 +51,28 @@ async function run() {
         });
 
         // GET API by email
+        app.get('/processOrders/:email', async (req, res) => {
+            const userEmail = req.params.email;
+            console.log(userEmail);
+            const myOrder = await orderCollection.find({ email: req.params.email }).toArray();
+            res.json(myOrder);
+        });
+
+
+        // Delete API 
+        app.delete('/processOrders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: id }
+            const result = await orderCollection.deleteOne(query);
+            res.json(result)
+        });
+        // find it 
+        app.get('/processOrders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await orderCollection.findOne(query);
+            res.json(result)
+        });
 
 
 
@@ -67,7 +90,9 @@ async function run() {
             const service = await servicesCollection.findOne(query);
             res.json(service)
 
-        })
+        });
+
+
 
     }
     finally {
