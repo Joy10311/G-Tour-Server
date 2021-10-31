@@ -37,10 +37,10 @@ async function run() {
             res.json(result)
         });
 
-        // order confirm post api
-        app.post('/processOrders', async (req, res) => {
+        // order confirm post api handleclick
+        app.post('/orders', async (req, res) => {
             const newBooking = req.body;
-            const result = await orderCollections.insertOne(newBooking);
+            const result = await orderCollection.insertOne(newBooking);
             res.json(result);
         });
 
@@ -66,15 +66,18 @@ async function run() {
             const result = await orderCollection.deleteOne(query);
             res.json(result)
         });
-        // find it 
-        app.get('/processOrders/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) }
-            const result = await orderCollection.findOne(query);
-            res.json(result)
-        });
+        // // find it 
+        // app.get('/processOrders/:id', async (req, res) => {
+        //     const id = req.params.id;
 
+        //     const result = await orderCollection.find({ _id: req.params.id }).toArray();
+        //     console.log(result)
+        //     res.json(result)
+        // });
 
+        // *************
+        // offer page// 
+        // ************
 
         // GET services API
         app.get('/services', async (req, res) => {
